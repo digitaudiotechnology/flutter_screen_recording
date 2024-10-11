@@ -7,10 +7,12 @@ import android.hardware.display.DisplayManager
 import android.hardware.display.VirtualDisplay
 import android.media.MediaRecorder
 import android.media.projection.MediaProjection
+import android.media.projection.MediaProjectionConfig
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.util.DisplayMetrics
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -54,6 +56,7 @@ class FlutterScreenRecordingPlugin() : MethodCallHandler, PluginRegistry.Activit
                 mMediaProjection?.registerCallback(mMediaProjectionCallback!!, null)
                 mVirtualDisplay = createVirtualDisplay()
                 _result.success(true)
+                mMediaRecorder?.start()
                 return true
             } else {
                 _result.success(false)
@@ -164,6 +167,7 @@ class FlutterScreenRecordingPlugin() : MethodCallHandler, PluginRegistry.Activit
         println("$mDisplayWidth x $mDisplayHeight")
     }
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     fun startRecordScreen() {
         try {
             try {
@@ -188,8 +192,8 @@ class FlutterScreenRecordingPlugin() : MethodCallHandler, PluginRegistry.Activit
             mMediaRecorder?.setVideoFrameRate(30)
 
             mMediaRecorder?.prepare()
-            mMediaRecorder?.start()
-            val permissionIntent = mProjectionManager?.createScreenCaptureIntent()
+            val permissionIntent = mProjectionManager?.createScreenCaptureIntent(
+                MediaProjectionConfig.createConfigForDefaultDisplay())
             ActivityCompat.startActivityForResult(
                 activityBinding!!.activity!!,
                 permissionIntent!!,
