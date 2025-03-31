@@ -41,18 +41,18 @@ android {
         disable 'InvalidPackage'
     }
     compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_17
     }
     android {
         kotlinOptions {
-            jvmTarget = '1.8'
+            jvmTarget = '17'
         }
     }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'com.github.HBiSoft:HBRecorder:3.0.7'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'com.github.HBiSoft:HBRecorder:2.0.5'
 
 }
